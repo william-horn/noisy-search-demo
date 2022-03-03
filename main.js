@@ -42,7 +42,12 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 ==================================================================================================================================
 */
 
+const outputDisplayContainer = document.querySelector(".output-display-container")
+const generateSearchButton = document.querySelector("#generate-search-btn")
 
+function generateSearch() {
+    
+}
 
-
+generateSearchButton.addEventListener("click", generateSearch)
 

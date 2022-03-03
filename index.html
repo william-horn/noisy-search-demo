@@ -61,20 +61,43 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
         </header>
 
         <div class="output-display-container">
-
+            <p>something strange is afoot</p>
         </div>
 
-        <section class="search-settings-container">
+        <section class="search-container">
             <h2>Search Settings</h2>
-            <h3><strong>How To Use:</strong></h3>
+            <h3>How To Use:</h3>
             <p>
-                Just do it lol
+                Enter a word for the program to attempt to generate randomly. Keep in mind, each character is individually randomly generated. So, the longer the word, the lower the probability it will be generated. Thus, taking a longer time to generate.
             </p>
-            <form action="">
-
-            </form>
+            <div class="flex-row-wrap">
+                <div class="settings">
+                    <div class="text-input-container">
+                        <div class="input-box">
+                            <label for="word-input">Word to Generate: </label>
+                            <input type="text" name="word-input" id="word-input" placeholder="Example: Coleslaw">
+                        </div>
+                        <div class="input-box">
+                            <label for="length-input">String Length:</label>
+                            <input type="number" name="length-input" id="length-input" placeholder="Must be under 500">
+                        </div>
+                    </div>
+                    <button id="generate-search-btn" class="generate-search-btn">Generate Search</button>
+                    <button id="cancel-generate-btn" class="cancel-generate-btn">Cancel Search</button>
+                </div>
+                <div class="stats-display">
+                    <h3>Probability:</h3>
+                    <p>Generate a search to load probability info</p>
+                    <div class="probability-info">
+                        <p>Your search is 1 in 934,313 probability of being generated</p>
+                        <h3>Experimental Probability:</h3>
+                        <p>Your search was actually good</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
+        <script src="main.js"></script>
     </body>
 </html>
 

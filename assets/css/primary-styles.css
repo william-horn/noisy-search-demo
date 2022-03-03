@@ -42,6 +42,16 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 ================================================================================================================================== 
 */
 
+/* --------------- */
+/* Utility Classes */
+/* --------------- */
+
+.flex-row-wrap {
+    --min-flex-width: 180px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 /* ------------------- */
 /* Primary Page Header */
 /* ------------------- */
@@ -62,18 +72,111 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 }
 
 .main-header p {
-    font-size: 1.5em;
     width: 50%;
     margin: 0 auto 15px auto;
 }
 
-/* ----- */
-/* Other */
-/* ----- */
+/* -------------- */
+/* Output Display */
+/* -------------- */
 
 .output-display-container {
     width: 100%;
     height: 20vh;
     margin-bottom: 15px;
     background-color: var(--theme-main-background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.output-display-container p {
+    color: white;
+    text-justify: auto;
+    width: 50%;
+    letter-spacing: 1px;
+}
+
+/* ----------------------- */
+/* Search Settings Section */
+/* ----------------------- */
+
+.search-container > h2 {
+    margin-bottom: 0;
+}
+
+.search-container > h3 {
+    margin-top: 10px;
+}
+
+.settings {
+    /* background-color: var(--theme-primary-background-color); */
+    /* width: 50%; */
+    flex: 1; 
+    min-width: var(--min-flex-width); /* overwrite the flexbox-assigned min-width from the parent so this stays centered */
+    padding: 10px;
+}
+
+.settings button {
+    margin: 20px 0 0 0;
+    width: 100%;
+    transition-property: background-color;
+    transition-duration: 0.25s;
+}
+
+.generate-search-btn:hover {
+    background-color: var(--theme-primary-button-hover-color);
+}
+
+.cancel-generate-btn {
+    display: none;
+    background-color: #401e1e;
+    transition-property: background-color;
+    transition-duration: 0.25s;
+}
+
+.cancel-generate-btn:hover {
+    background-color: #6a3c3c;
+}
+
+
+.input-box {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.input-box label {
+    flex: 1;
+    margin-right: 10px;
+    min-width: 70px; /* overwrite the flexbox-assigned min-width from the parent so this stays centered */
+}
+
+.input-box input {
+    flex: 1;
+    min-width: 70px; /* overwrite the flexbox-assigned min-width from the parent so this stays centered */
+}
+
+.stats-display {
+    /* border-left: 2px solid white; */
+    flex: 1;
+    padding: 10px;
+    min-width: var(--min-flex-width); /* trigger the flex-wrap once the screen is crushed in */
+    margin-bottom: 200px;
+}
+
+.stats-display h3 {
+    color: #6b54a5;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.probability-info {
+    display: none;
+}
+
+.probability-info p {
+    color: white;
+    font-size: 1.1em;
 }
