@@ -42,10 +42,67 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 ================================================================================================================================== 
 */
 
+:root {
+    /* theme colors */
+    --theme-primary-text-color: #4c4c4c;
+    --theme-primary-background-color: #1c1c1c;
+    --theme-primary-heading-text-color: #5de787;
+    --theme-primary-heading-span-text-color: #384c30;
+    --theme-secondary-heading-text-color: #778165;
+    --theme-main-background-color: #141414;
 
+    /* theme fonts */
+    --theme-primary-heading-font: sans-serif;
+    --theme-primary-text-font: monospace;
 
+    /* general styling */
+    --header-margin: 20px 0 20px 0;
+}
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 
+    /* @debug-on:start */
+    /* border: 1px solid red; */
+    /* @debug-on:end */
+}
+
+body {
+    background-color: black;
+    overflow: hidden;
+    font-family: var(--theme-primary-text-font);
+}
+
+header {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+p {
+    color: var(--theme-primary-text-color);
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+section {
+    width: 50%;
+    margin: 0 auto;
+}
+
+h2, h3 {
+    color: var(--theme-secondary-heading-text-color);
+    margin: var(--header-margin);
+    font-size: 2em;
+    text-align: center;
+}
+
+h3 {
+    font-size: 1.3em;
+}
 
 
 

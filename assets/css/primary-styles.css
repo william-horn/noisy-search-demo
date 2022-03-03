@@ -42,9 +42,38 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 ================================================================================================================================== 
 */
 
+/* ------------------- */
+/* Primary Page Header */
+/* ------------------- */
 
+.main-heading {
+    color: var(--theme-primary-heading-text-color);
+    font-family: var(--theme-primary-heading-font);
+    margin-bottom: 20px;
+    text-align: center;
+    /* width: 100%; */
+    font-size: 3.5em;
+    letter-spacing: 10px;
+}
 
+.main-heading span {
+    color: var(--theme-primary-heading-span-text-color);
+    letter-spacing: 0;
+}
 
+.main-header p {
+    font-size: 1.5em;
+    width: 50%;
+    margin: 0 auto 15px auto;
+}
 
+/* ----- */
+/* Other */
+/* ----- */
 
-
+.output-display-container {
+    width: 100%;
+    height: 20vh;
+    margin-bottom: 15px;
+    background-color: var(--theme-main-background-color);
+}
