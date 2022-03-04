@@ -330,9 +330,6 @@ function generateSearch() {
         );
     
         setElementPropertyToDefault($generateSearchButton, "textContent"); // obsolete now
-
-        
-
         cancelSearch(); // reset debounce
     }
 
