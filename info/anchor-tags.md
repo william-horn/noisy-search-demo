@@ -16,7 +16,7 @@
 
 # Anchor Tags
 
-Within each program file you may see anchor tags (denoted by `@anchor` or `@anchor:...`). These are commented-out sections of text that represent some significance in the file. They represent a specific category in which that section of code falls under, such as if there was a bug in your code you could comment `@bug:start` above it and search for it again later.
+Within each program file you may see anchor tags (denoted by `@ anchor` or `@ anchor:...`). These are commented-out sections of text that represent some significance in the file. They represent a specific category in which that section of code falls under, such as if there was a bug in your code you could comment `@ bug:start` above it and search for it again later.
 
 ## Using Anchor Tags
 
@@ -27,7 +27,7 @@ Aside from anchor tag comments indicating some significant categorical informati
 
 <br>
 
-This can be really useful in large projects where you want to mark certain sections of code by category and the search for that category later on. Specific tags such as `@bug:start` and `@debug-on:start` are especially useful as they are sections of code you will often want to revisit and keep track of:
+This can be really useful in large projects where you want to mark certain sections of code by category and the search for that category later on. Specific tags such as `@ bug:start` and `@ debug-on:start` are especially useful as they are sections of code you will often want to revisit and keep track of:
 
 <img src="./sample-images/anchor-tags-debug-example.png">
 

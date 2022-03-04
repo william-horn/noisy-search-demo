@@ -42,15 +42,6 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 ================================================================================================================================== 
 */
 
-/* --------------- */
-/* Utility Classes */
-/* --------------- */
-
-.flex-row-wrap {
-    --min-flex-width: 180px;
-    display: flex;
-    flex-wrap: wrap;
-}
 
 /* ------------------- */
 /* Primary Page Header */
@@ -76,13 +67,18 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
     margin: 0 auto 15px auto;
 }
 
+.main-heading .beta-footer {
+    font-size: 0.4em;
+    color: #304c48;
+}
+
 /* -------------- */
 /* Output Display */
 /* -------------- */
 
 .output-display-container {
     width: 100%;
-    height: 20vh;
+    min-height: 20vh;
     margin-bottom: 15px;
     background-color: var(--theme-main-background-color);
     display: flex;
@@ -92,22 +88,42 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 }
 
 .output-display-container p {
+    word-break: break-all;
     color: white;
-    text-justify: auto;
     width: 50%;
     letter-spacing: 1px;
+    margin-bottom: 0;
 }
 
 /* ----------------------- */
 /* Search Settings Section */
 /* ----------------------- */
 
+.search-container {
+    background-color: var(--theme-primary-background-color);
+    padding: 15px;
+    border-radius: 15px;
+}
+
 .search-container > h2 {
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 .search-container > h3 {
     margin-top: 10px;
+}
+
+.main-interface {
+    --min-flex-width: 150px;
+    --button-background-color: #546e4b;
+    --button-background-transition: background-color 0.25s;
+
+    display: flex;
+    flex-wrap: wrap;
+    background-color: var(--theme-secondary-background-color);
+    border-radius: 15px;
+    justify-content: center; /* this will keep the elements centered even when their min-width overflows the parent border */
 }
 
 .settings {
@@ -121,29 +137,36 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 .settings button {
     margin: 20px 0 0 0;
     width: 100%;
-    transition-property: background-color;
-    transition-duration: 0.25s;
+    transition: var(--button-background-transition);
 }
 
 .generate-search-btn {
-    background-color: #546e4b;
-}
-
-.generate-search-btn:hover {
-    background-color: #87a17e;
+    background-color: var(--button-background-color);
 }
 
 .cancel-generate-btn {
     display: none;
     background-color: var(--theme-error-background-color);
-    transition-property: background-color;
-    transition-duration: 0.25s;
+    transition: var(--button-background-transition);
 }
 
-.cancel-generate-btn:hover {
+/* @bug:start[1.0]:"button hovers are not working" */
+/* 
+    !revisit:
+    
+    button hovers conflict with the main.js code when clicking to change
+    background colors. hover effects disabled until a fix is ready
+*/
+
+/* .generate-search-btn:hover {
+    background-color: #87a17e;
+} */
+
+/* .cancel-generate-btn:hover {
     background-color: #6a3c3c;
-}
+} */
 
+/* @bug:end[1.0] */
 
 .input-box {
     display: flex;
@@ -171,16 +194,55 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 }
 
 .stats-display h3 {
-    color: #6b54a5;
+    color: #262626;
     margin-top: 0;
     margin-bottom: 10px;
 }
 
-.probability-info {
+.stats-display p {
+    color: white;
+    font-size: 1.1em;
+}
+
+.exp-stats-display {
     display: none;
 }
 
-.probability-info p {
-    color: white;
-    font-size: 1.1em;
+
+/* ------ */
+/* Footer */
+/* ------ */
+
+footer h2 {
+    padding-top: 50px;
+    margin-bottom: 10px;
+}
+
+
+/* ------------- */
+/* Media Queries */
+/* ------------- */
+
+/* medium screen */
+@media screen and (max-width: 956px) {
+
+    /* make input-label text size smaller */
+    .input-box label {
+        font-size: 1em;
+    }
+
+}
+
+/* small screen */
+@media screen and (max-width: 802px) {
+
+    /* make input-label text size smaller */
+    .input-box label {
+        font-size: 0.8em;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+    
 }

@@ -46,6 +46,7 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
     /* theme colors */
     --theme-primary-text-color: #4c4c4c;
     --theme-primary-background-color: #1c1c1c;
+    --theme-secondary-background-color: #060606;
     --theme-primary-heading-text-color: #5de787;
     --theme-primary-heading-span-text-color: #384c30;
     --theme-secondary-heading-text-color: #748b6b;
@@ -140,9 +141,11 @@ button {
     font-family: var(--theme-primary-button-font);
 }
 
-button:hover {
+/* @bug:start[1.1]:"disabled global button hover until bug fix  */
+/* button:hover {
     background-color: var(--theme-primary-button-background-hover-color);
-}
+} */
+/* @bug:end[1.1] */
 
 section {
     width: 50%;
