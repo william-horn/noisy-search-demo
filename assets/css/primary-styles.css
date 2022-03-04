@@ -60,6 +60,7 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 .main-heading span {
     color: var(--theme-primary-heading-span-text-color);
     letter-spacing: 0;
+    position: relative;
 }
 
 .main-header p {
@@ -70,6 +71,9 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 .main-heading .beta-footer {
     font-size: 0.4em;
     color: #304c48;
+    position: absolute;
+    right: -70px;
+    bottom: 0px;
 }
 
 /* -------------- */
@@ -229,6 +233,10 @@ footer h2 {
     /* make input-label text size smaller */
     .input-box label {
         font-size: 1em;
+    }
+
+    .beta-footer {
+        display: none;
     }
 
 }

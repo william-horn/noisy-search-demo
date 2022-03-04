@@ -233,9 +233,9 @@ function generateDynamicTextTo(parent, textData) {
 
 // todo: partition 'generateSearch' into smaller functions
 function generateSearch() {
-    // set debounce
+
+    // debounce condition
     if (IS_GENERATING === true) return;
-    beginSearch();
 
     const wordInputValue = $wordInput.value;
     let genSpeedValue = parseInt($genSpeedInput.value);
@@ -249,6 +249,9 @@ function generateSearch() {
         invalidSearchMessage(`String length must be <= ${MAX_STRING_LENGTH}.`);
         return;
     }
+
+    // begin search and set debounce
+    beginSearch();
 
     // update text info when successful generation starts
     genStringLength = Math.max(wordInputValue.length, genStringLength);
