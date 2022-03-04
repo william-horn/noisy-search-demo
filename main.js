@@ -7,7 +7,7 @@
 ? @author:                 William J. Horn
 ? @document-name:          main.js
 ? @document-created:       03/02/2022
-? @document-modified:      03/02/2022
+? @document-modified:      03/04/2022
 ? @document-version:       v0.0.0
 
 ==================================================================================================================================
@@ -17,7 +17,7 @@
 | ABOUT DOCUMENT |
 ==================================================================================================================================
 
-Something soon
+This program is responsible for the main functionality of the search function and user input.
 
 ==================================================================================================================================
 
@@ -37,7 +37,10 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 | DOCUMENT TODO |
 ==================================================================================================================================
 
--  
+-   Fix bug with button hover effects and and changing background colors
+-   Implement a JavaScript scheduler using 'yield' for more efficient wait time simulations and task switching
+-   Break apart heavy-duty functions into utility functions + main logic
+-   Fix issue with calculated probability displaying incorrect numbers for large values
 
 ==================================================================================================================================
 */
@@ -46,11 +49,18 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
 /* Program Init */
 /* ------------ */
 
+
+
+
 // global constants
 const MAX_STRING_LENGTH = 200;
 const MAX_WORD_LENGTH = 15;
+const DEFAULT_GEN_SPEED = 100; // ms
 
 const DEBUG_PRINT_ON = true;
+
+// program memory (don't change)
+let IS_GENERATING = false;
 
 // get html elements refs
 const $searchOutput = document.querySelector("#search-output");
@@ -62,6 +72,8 @@ const $probabilityInfoContainer = document.querySelector("#probability-info");
 const $defaultStatsContainer = document.querySelector("#hide-default-stats");
 const $theoStatsContainers = document.querySelector("#theo-stats-display");
 const $expStatsContainer = document.querySelector("#exp-stats-display");
+const $genSpeedInput = document.querySelector("#gen-speed");
+const $cancelGenerateBtn = document.querySelector("#cancel-generate-btn");
 
 // assign settings to elements
 $wordInput.setAttribute("maxlength", MAX_WORD_LENGTH);
@@ -69,10 +81,22 @@ $wordInput.setAttribute("maxlength", MAX_WORD_LENGTH);
 // store default css property states
 let savedElementPropertyDefaults = {};
 
+
+
+
 /* ----------------- */
 /* Utility Functions */
 /* ----------------- */
 
+
+
+
+// hacky sleep stuff, replace with a scheduler later
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// debounce callback (is there a better way to do this?)
 function debounce(func, delay) {
     let gate = true;
     return function(...args) {
@@ -86,6 +110,7 @@ function debounce(func, delay) {
     }
 }
 
+// get weak copy of object (attributes only)
 function weakObjectClone(obj) {
     let newObj = {};
     for (key in obj) newObj[key] = obj[key];
@@ -110,24 +135,33 @@ function debugPrint(...args) {
     }
 }
 
+
+
+
 /* ------------------- */
 /* Dedicated Functions */
 /* ------------------- */
 
+
+
+// retrieve properties from default
 function getDefaultProperties(element) {
     return savedElementPropertyDefaults[element];
 }
 
+// retrieve a default property
 function getDefaultElementProperty(element, property) {
     let defEl = savedElementPropertyDefaults[element];
     return defEl[property] || defEl.style[property];
 }
 
+// set an element back to it's default state
 function setElementPropertyToDefault(element, property) {
     let defEl = savedElementPropertyDefaults[element];
     element[property] ? element[property] = defEl[property] : element.style[property] = defEl.style[property];
 }
 
+// update the generate button with an input validation error message
 function invalidSearchMessage(message, displayTime) {
     $generateSearchButton.textContent = message;
     $generateSearchButton.style.backgroundColor = "var(--theme-error-background-color)";
@@ -143,15 +177,34 @@ function getRandomLetterLower() {
     return String.fromCharCode(randomInt(97, 122));
 }
 
+// work on better decimal-to-string conversion
+function calcInvertDecimal() {
+
+}
+
 // calculate theoretical probability of word generation based on word length and generated string length
 function calcProbability(wordLength, genStrLength, truncFrac) {
     let prob = genStrLength/Math.pow(26, wordLength);
+    console.log("change: ",prob);
     return {
         frac: truncFrac ? /[0\.]+[^0.]/.exec(prob)[0] : prob,
         int: Math.round(1/prob)
     };
 }
 
+function beginSearch() {
+    IS_GENERATING = true;
+    $generateSearchButton.style.display = "none";
+    $cancelGenerateBtn.style.display = "block";
+}
+
+function cancelSearch() {
+    IS_GENERATING = false
+    $generateSearchButton.style.display = "block";
+    $cancelGenerateBtn.style.display = "none";
+}
+
+// generate text to a container
 function generateDynamicTextTo(parent, textData) {
     // clear existing children
     const parentChildren = parent.children;
@@ -178,12 +231,18 @@ function generateDynamicTextTo(parent, textData) {
     return $textEl.children;
 }
 
+// todo: partition 'generateSearch' into smaller functions
 function generateSearch() {
+    // set debounce
+    if (IS_GENERATING === true) return;
+    beginSearch();
+
     const wordInputValue = $wordInput.value;
+    let genSpeedValue = parseInt($genSpeedInput.value);
     let genStringLength = parseInt($stringLengthInput.value);
 
     // handle no word input or no length input
-    if (!wordInputValue || isNaN(genStringLength)) {
+    if (!wordInputValue || isNaN(genStringLength) || isNaN(genSpeedValue)) {
         invalidSearchMessage("Incomplete data. Try again.");
         return;
     } else if (genStringLength > MAX_STRING_LENGTH) {
@@ -194,12 +253,11 @@ function generateSearch() {
     // update text info when successful generation starts
     genStringLength = Math.max(wordInputValue.length, genStringLength);
     $stringLengthInput.value = genStringLength;
-    $generateSearchButton.textContent = "Generating...";
 
     // hide the default probability info text and display the generated text
-    $defaultStatsContainer.style.setProperty("display", "none");
-    $theoStatsContainers.style.setProperty("display", "block");
-    $expStatsContainer.style.setProperty("display", "block");
+    $defaultStatsContainer.style.display = "none";
+    $theoStatsContainers.style.display = "block";
+    $expStatsContainer.style.display = "block";
 
     // calculate the theoretical probability
     const probability = calcProbability(wordInputValue.length, genStringLength, true);
@@ -217,22 +275,65 @@ function generateSearch() {
     ]);
 
 
-
-
     // generate logic
-    let strChunk = "";
+    let strOutput;
+    let matchData;
+    let iterations = 0;
 
-    for (let i = 0; i < genStringLength; i++) {
-        strChunk += getRandomLetterLower();
+    const wordPattern = new RegExp(wordInputValue);
+
+    let genText = generateDynamicTextTo($outputDisplayContainer, [
+        {content: ""},
+    ])[0];
+
+    let iterationDisplay = generateDynamicTextTo($expStatsContainer, [
+        {content: ""},
+    ])[0];
+
+    async function startLoop() {
+        while (IS_GENERATING) {
+
+            // generate random string
+            strOutput = "";
+            iterations++;
+
+            for (let i = 0; i < genStringLength; i++) {
+                strOutput += getRandomLetterLower();
+            }
+
+            // if a match is found then exit loop
+            matchData = wordPattern.exec(strOutput);
+            if (matchData) break;
+
+            // else keep updating the text
+            genText.textContent = strOutput
+            iterationDisplay.textContent = "Iterations: " + iterations;
+            await sleep(genSpeedValue);
+        }
+
+        if (!matchData) return;
+
+        const matchIndex = matchData.index;
+        const chunk0 = strOutput.substring(0, matchIndex);
+        const chunk1 = strOutput.substring(matchIndex, matchIndex + wordInputValue.length);
+        const chunk2 = strOutput.substring(matchIndex + wordInputValue.length, strOutput.length);
+    
+        genText = generateDynamicTextTo(
+            $outputDisplayContainer, [
+                {content: chunk0},
+                {content: chunk1, style: `color: #00ff1f`},
+                {content: chunk2}
+            ]
+        );
+    
+        setElementPropertyToDefault($generateSearchButton, "textContent"); // obsolete now
+
+        
+
+        cancelSearch(); // reset debounce
     }
 
-    generateDynamicTextTo($outputDisplayContainer, [
-        {content: strChunk},
-        {content: "testing"}
-    ])
-
-
-    setElementPropertyToDefault($generateSearchButton, "textContent");
+    startLoop();
 }
 
 // load default css properties into 'savedElementPropertyDefaults'
@@ -249,6 +350,10 @@ function loadElementPropertyDefaults() {
 
 function initPageElementDefaults() {
     debugPrint(">> setting page first impression...");
+
+    $wordInput.value = "hello";
+    $stringLengthInput.value = $wordInput.value.length;
+    $genSpeedInput.value = "100";
     $generateSearchButton.textContent = "Generate Search!";
 
     generateDynamicTextTo($outputDisplayContainer, [
@@ -269,6 +374,7 @@ document.addEventListener("readystatechange", () => {
 })
 
 // generate search click listener //
-const generateSearchDebounce = debounce(generateSearch, 2000);
-$generateSearchButton.addEventListener("click", generateSearchDebounce);
+// const generateSearchDebounce = debounce(generateSearch, 2000);
+$generateSearchButton.addEventListener("click", generateSearch);
+$cancelGenerateBtn.addEventListener("click", cancelSearch);
 
