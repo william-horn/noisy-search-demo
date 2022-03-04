@@ -52,8 +52,10 @@ https://github.com/william-horn/my-coding-conventions/blob/main/document-convent
     --theme-main-background-color: #141414;
     --theme-input-label-color: #547072;
     --theme-primary-button-color: white;
-    --theme-primary-button-hover-color: #87a17e;
+    --theme-primary-button-background-color: #1c1c1c;
+    --theme-primary-button-background-hover-color: #323232;
     --theme-text-input-border-color: #87a17e;
+    --theme-error-background-color: #401e1e;
 
     /* theme borders */
     --theme-text-input-border: 2px solid var(--theme-text-input-border-color);
@@ -132,10 +134,14 @@ button {
     text-decoration: none;
     border: none;
     padding: 10px;
-    background-color: var(--theme-primary-background-color);
+    background-color: var(--theme-primary-button-background-color);
     color: var(--theme-primary-button-color);
     font-size: 1em;
     font-family: var(--theme-primary-button-font);
+}
+
+button:hover {
+    background-color: var(--theme-primary-button-background-hover-color);
 }
 
 section {
